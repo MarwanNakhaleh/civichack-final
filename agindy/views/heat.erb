@@ -18,8 +18,15 @@
 	<div id="mapid"></div>
 	<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
 	<script>
+		/*
 		var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 			attribution: 'Map data &copy; 2016 OpenStreetMap contributors',
+			maxZoom: 18
+		});
+		*/
+
+		var osm = L.tileLayer('https://api.mapbox.com/styles/v1/mnakhaleh/cip615lmk0002asmdw3dxo932/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibW5ha2hhbGVoIiwiYSI6ImNpcDVpNGw4MTAwYzV2NWtyM3l5ZGl4bjkifQ.jmycD6LV9EP_m2-3bHgUNw', {
+			attribution: 'Leaflet.js',
 			maxZoom: 18
 		});
 
