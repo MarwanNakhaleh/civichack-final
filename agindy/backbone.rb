@@ -5,7 +5,7 @@ require 'json'
 set :views, "views"
 
 get "/" do
-	redirect "/heat"
+	erb :index
 end
 
 get "/heat" do
