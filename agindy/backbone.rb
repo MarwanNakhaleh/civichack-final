@@ -8,8 +8,8 @@ get "/" do
 	erb :index
 end
 
-get "/heatmaps" do
-	erb :heatmaps
+get "/maps" do
+	erb :maps
 end
 
 get "/about" do
