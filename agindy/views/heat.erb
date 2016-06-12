@@ -51,6 +51,7 @@
 					<div id="mapid"></div>
 					<script src="http://cdn.leafletjs.com/leaflet/v0.6.4/leaflet.js"></script>
 					<script src="<%= url('/ZIP_Code_Boundaries.js') %>"></script>
+					<script src="<%= url('/Indianapolis_Police_Zones.js') %>"></script>
 					<script src="<%= url('/leaflet.shpfile.js') %>"></script>
 					<script>
 						var mymap = L.map('mapid').setView([39.768, -86.159], 11);
@@ -77,7 +78,7 @@
 							<% end %>
 						<% end %>
 
-						L.geoJson(zips, {
+						L.geoJson(police, {
 							style: function (feature) {
 								fillColors = ['red', 'green', 'blue'];
 								styles = {
