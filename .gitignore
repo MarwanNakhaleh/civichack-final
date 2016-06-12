@@ -1,5 +1,2 @@
-# Don't keep CSVs in the repo
-*.csv
-
 # Build your own -- for compatibility reasons
 node_modules
