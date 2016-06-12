@@ -24,6 +24,10 @@ get "/violent_crime_by_year" do
 	erb :violent_crime_by_year
 end
 
+get "/violence" do
+	erb :violence
+end
+
 not_found do
 	erb :four_oh_four
 end
