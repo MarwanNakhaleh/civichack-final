@@ -8,12 +8,16 @@ get "/" do
 	erb :index
 end
 
-get "/heat" do
-	erb :heat
+get "/maps" do
+	erb :maps
 end
 
-get "/heatmaps" do
-	erb :heatmaps
+get "/about" do
+	erb :about
+end
+
+get "/contact" do
+	erb :contact
 end
 
 get "/violent_crime_by_year" do

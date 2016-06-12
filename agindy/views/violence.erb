@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
-	<script src="htp://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.6.4/leaflet.css" />
+	<script src="htp://cdn.leafletjs.com/leaflet/v0.6.4/leaflet.js"></script>
 	<script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
 	<link rel="stylesheet" href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' />
 	<link rel="stylesheet" href="<%= url('/assets/css/main.css') %>" />
@@ -45,15 +45,11 @@
 				<div id="main">
 					<div class="inner">
 						<header>
-							<h1>Violent Crimes in Indianapolis by year</h1>
+							<h1>Violent Crimes in Indianapolis in 2014</h1>
+							<p>Purple = rape</p>
+							<p>Red = homicide</p>
 							<div id="mapid"></div>
-							<br><br>
-							<p><b>Green:</b> 2014</p>
-							<p><b>Yellow:</b> 2013</p>
-							<p><b>Orange:</b> 2012</p>
-							<p><b>Red:</b> 2011</p>
-							<p><b>Purple:</b> 2010</p>
-							<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+							<script src="http://cdn.leafletjs.com/leaflet/v0.6.4/leaflet.js"></script>
 							<script src="<%= url('/catiline.js') %>"></script>
 							<script src="<%= url('/leaflet.shpfile.js') %>"></script>
 							<script>
@@ -65,66 +61,21 @@
 								}).addTo(mymap);
 
 						        <% require 'csv' %>
-
-						        var twentyfourteen = L.layerGroup();
 								<% CSV.foreach("IMPD_UCR_2014_Data_NEW.csv") do |row| %>
-									<% if row[1].to_s == "110" || row[1].to_s == "120"%>
-										var circle = L.circle([<%= row[9].to_f %>, <%= row[8].to_f %>], 10, {
-											color: 'green',
-											fillColor: '#0c0',
-											fillOpacity: 0.5
-										}).addTo(twentyfourteen);
-									<% end %>
-								<% end %>
-								twentyfourteen.addTo(mymap);
-
-								var twentythirteen = L.layerGroup();
-								<% CSV.foreach("IMPD_UCR_2013_Data_NEW.csv") do |row| %>
-									<% if row[1].to_s == "110" || row[1].to_s == "120"%>
-										var circle = L.circle([<%= row[9].to_f %>, <%= row[8].to_f %>], 10, {
-											color: 'yellow',
-											fillColor: '#ff0',
-											fillOpacity: 0.5
-										}).addTo(twentythirteen);
-									<% end %>
-								<% end %>
-								twentythirteen.addTo(mymap);
-
-								var twentytwelve = L.layerGroup();
-								<% CSV.foreach("IMPD_UCR_2012_Data_NEW.csv") do |row| %>
-									<% if row[1].to_s == "110" || row[1].to_s == "120"%>
-										var circle = L.circle([<%= row[9].to_f %>, <%= row[8].to_f %>], 10, {
-											color: 'orange',
-											fillColor: '#f60',
-											fillOpacity: 0.5
-										}).addTo(twentytwelve);
-									<% end %>
-								<% end %>
-								twentytwelve.addTo(mymap);
-
-								var twentyeleven = L.layerGroup();
-								<% CSV.foreach("IMPD_UCR_2011_Data_NEW.csv") do |row| %>
-									<% if row[1].to_s == "110" || row[1].to_s == "120"%>
+									<% if row[1].to_s == "110" %>
 										var circle = L.circle([<%= row[9].to_f %>, <%= row[8].to_f %>], 10, {
 											color: 'red',
-											fillColor: '#c00',
+											fillColor: '#f03',
 											fillOpacity: 0.5
-										}).addTo(twentyeleven);
-									<% end %>
-								<% end %>
-								twentyeleven.addTo(mymap);
-
-								var twentyten = L.layerGroup();
-								<% CSV.foreach("IMPD_UCR_2010_Data_NEW.csv") do |row| %>
-									<% if row[1].to_s == "110" || row[1].to_s == "120"%>
+										}).addTo(mymap);
+									<% elsif row[1].to_s == "120" %>
 										var circle = L.circle([<%= row[9].to_f %>, <%= row[8].to_f %>], 10, {
 											color: 'purple',
 											fillColor: '#606',
 											fillOpacity: 0.5
-										}).addTo(twentyten);
+										}).addTo(mymap);
 									<% end %>
 								<% end %>
-								twentyten.addTo(mymap);
 
 								var shpfile = new L.Shapefile('ZIP_Code_Boundaries.zip', {
 									onEachFeature: function(feature, layer) {
