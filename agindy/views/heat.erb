@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
-	<script src="htp://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.6.4/leaflet.css" />
+	<script src="htp://cdn.leafletjs.com/leaflet/v0.6.4/leaflet.js"></script>
 	<script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
 	<link rel="stylesheet" href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' />
 	<link rel="stylesheet" href="<%= url('/assets/css/main.css') %>" />
@@ -59,9 +59,11 @@
 							<p>Purple = rape</p>
 							<p>Red = homicide</p>
 							<div id="mapid"></div>
-							<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+							<script src="http://cdn.leafletjs.com/leaflet/v0.6.4/leaflet.js"></script>
+							<script src="<%= url('/catiline.js') %>"></script>
+							<script src="<%= url('/leaflet.shpfile.js') %>"></script>
 							<script>
-								var mymap = L.map('mapid').setView([39.768, -86.159], 10);
+								var mymap = L.map('mapid').setView([39.768, -86.159], 11);
 								L.tileLayer('https://api.mapbox.com/styles/v1/mnakhaleh/cip615lmk0002asmdw3dxo932/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibW5ha2hhbGVoIiwiYSI6ImNpcDVpNGw4MTAwYzV2NWtyM3l5ZGl4bjkifQ.jmycD6LV9EP_m2-3bHgUNw', {
 									attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
 									maxZoom: 18,
@@ -84,6 +86,23 @@
 										}).addTo(mymap);
 									<% end %>
 								<% end %>
+
+								var shpfile = new L.Shapefile('ZIP_Code_Boundaries.zip', {
+									onEachFeature: function(feature, layer) {
+										if (feature.properties) {
+											layer.bindPopup(Object.keys(feature.properties).map(function(k) {
+												return k + ": " + feature.properties[k];
+											}).join("<br />"), {
+												maxHeight: 200
+											});
+										}
+									}
+								});
+
+								shpfile.addTo(mymap);
+								shpfile.once("data:loaded", function() {
+									console.log("finished loaded shapefile");
+								});
 							</script>
 						</header>
 						<section class="tiles">
