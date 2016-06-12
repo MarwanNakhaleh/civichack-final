@@ -54,9 +54,12 @@
 				<div id="main">
 					<div class="inner">
 						<header>
-							<h1>Violent Crimes in Indianapolis in 2014</h1>
-							<p>Purple = rape</p>
-							<p>Red = homicide</p>
+							<h1>Violent Crimes in Indianapolis by year</h1>
+							<p><b>Green:</b> 2014</p>
+							<p><b>Yellow:</b> 2013</p>
+							<p><b>Orange:</b> 2012</p>
+							<p><b>Red:</b> 2011</p>
+							<p><b>Purple:</b> 2010</p>
 							<div id="mapid"></div>
 							<script src="http://cdn.leafletjs.com/leaflet/v0.6.4/leaflet.js"></script>
 							<script src="<%= url('/catiline.js') %>"></script>
@@ -71,13 +74,47 @@
 
 						        <% require 'csv' %>
 								<% CSV.foreach("IMPD_UCR_2014_Data_NEW.csv") do |row| %>
-									<% if row[1].to_s == "110" %>
+									<% if row[1].to_s == "110" || row[1].to_s == "120"%>
 										var circle = L.circle([<%= row[9].to_f %>, <%= row[8].to_f %>], 10, {
-											color: 'red',
-											fillColor: '#f03',
+											color: 'green',
+											fillColor: '#0c0',
 											fillOpacity: 0.5
 										}).addTo(mymap);
-									<% elsif row[1].to_s == "120" %>
+									<% end %>
+								<% end %>
+
+								<% CSV.foreach("IMPD_UCR_2013_Data_NEW.csv") do |row| %>
+									<% if row[1].to_s == "110" || row[1].to_s == "120"%>
+										var circle = L.circle([<%= row[9].to_f %>, <%= row[8].to_f %>], 10, {
+											color: 'yellow',
+											fillColor: '#ff0',
+											fillOpacity: 0.5
+										}).addTo(mymap);
+									<% end %>
+								<% end %>
+
+								<% CSV.foreach("IMPD_UCR_2012_Data_NEW.csv") do |row| %>
+									<% if row[1].to_s == "110" || row[1].to_s == "120"%>
+										var circle = L.circle([<%= row[9].to_f %>, <%= row[8].to_f %>], 10, {
+											color: 'orange',
+											fillColor: '#f60',
+											fillOpacity: 0.5
+										}).addTo(mymap);
+									<% end %>
+								<% end %>
+
+								<% CSV.foreach("IMPD_UCR_2011_Data_NEW.csv") do |row| %>
+									<% if row[1].to_s == "110" || row[1].to_s == "120"%>
+										var circle = L.circle([<%= row[9].to_f %>, <%= row[8].to_f %>], 10, {
+											color: 'red',
+											fillColor: '#c00',
+											fillOpacity: 0.5
+										}).addTo(mymap);
+									<% end %>
+								<% end %>
+
+								<% CSV.foreach("IMPD_UCR_2010_Data_NEW.csv") do |row| %>
+									<% if row[1].to_s == "110" || row[1].to_s == "120"%>
 										var circle = L.circle([<%= row[9].to_f %>, <%= row[8].to_f %>], 10, {
 											color: 'purple',
 											fillColor: '#606',
