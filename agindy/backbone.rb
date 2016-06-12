@@ -12,6 +12,10 @@ get "/maps" do
 	erb :maps
 end
 
+get "/heat" do
+	erb :heat
+end
+
 get "/about" do
 	erb :about
 end
