@@ -16,6 +16,10 @@ get "/heat" do
 	erb :heat
 end
 
+get "/crash" do
+	erb :crash
+end
+
 get "/stats" do
 	erb :stats
 end
