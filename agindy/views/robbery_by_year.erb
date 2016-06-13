@@ -60,22 +60,14 @@
 							<h1>Robberies in Indianapolis by year</h1>
 							<div class="row">
 								<div class="inline">
-									<input id="delAbandoned" type="button" value="- abandoned" />
-									<input id="addAbandoned" type="button" value="+ abandoned" /><br><br>
-									<input id="delBeat" type="button" value="- police beat" />
-									<input id="addBeat" type="button" value="+ police beat" /><br><br>
-									<input id="delNeighborhood" type="button" value="- neighborhood" />
-									<input id="addNeighborhood" type="button" value="+ neighborhood" /><br><br>
-									<input id="del2014" type="button" value="- 2014 data" />
-									<input id="add2014" type="button" value="+ 2014 data" /><br>
-									<input id="del2013" type="button" value="- 2013 data" />
-									<input id="add2013" type="button" value="+ 2013 data" /><br>
-									<input id="del2012" type="button" value="- 2012 data" />
-									<input id="add2012" type="button" value="+ 2012 data" /><br>
-									<input id="del2011" type="button" value="- 2011 data" />
-									<input id="add2011" type="button" value="+ 2011 data" /><br>
-									<input id="del2010" type="button" value="- 2010 data" />
-									<input id="add2010" type="button" value="+ 2010 data" />
+									<input id="toggleAbandoned" type="button" value="+ abandoned" /><br><br>
+									<input id="toggleBeat" type="button" value="+ police beat" /><br><br>
+									<input id="toggleNeighborhood" type="button" value="+ neighborhood" /><br><br>
+									<input id="toggle2014" type="button" value="+ 2014 data" /><br>
+									<input id="toggle2013" type="button" value="+ 2013 data" /><br>
+									<input id="toggle2012" type="button" value="+ 2012 data" /><br>
+									<input id="toggle2011" type="button" value="+ 2011 data" /><br>
+									<input id="toggle2010" type="button" value="+ 2010 data" />
 								</div>
 								<div id="mapid"></div>
 							</div>
@@ -283,24 +275,27 @@
 									}
 								});
 
+								var toggleLayer = function(layer, element) {
+									console.log(element);
+									if (mymap.hasLayer(layer)) {
+										mymap.removeLayer(layer);
+										$(element).val("+" + $(element).val().substring(1));
+									} else {
+										layer.addTo(mymap);
+										$(element).val("-" + $(element).val().substring(1));
+									}
+								}
 
-								$("#delAbandoned").on("click", function() { mymap.removeLayer(homes); });
-								$("#addAbandoned").on("click", function() { homes.addTo(mymap); });
-								$("#delNeighborhood").on("click", function() { mymap.removeLayer(neighborhoods); });
-								$("#addNeighborhood").on("click", function() { neighborhoods.addTo(mymap); });
-								$("#delBeat").on("click", function() { mymap.removeLayer(beats); });
-								$("#addBeat").on("click", function() { beats.addTo(mymap); });
 
-								$("#del2014").on("click", function() { mymap.removeLayer(twentyfourteen); });
-								$("#add2014").on("click", function() { twentyfourteen.addTo(mymap); });
-								$("#del2013").on("click", function() { mymap.removeLayer(twentythirteen); });
-								$("#add2013").on("click", function() { twentythirteen.addTo(mymap); });
-								$("#del2012").on("click", function() { mymap.removeLayer(twentytwelve); });
-								$("#add2012").on("click", function() { twentytwelve.addTo(mymap); });
-								$("#del2011").on("click", function() { mymap.removeLayer(twentyeleven); });
-								$("#add2011").on("click", function() { twentyeleven.addTo(mymap); });
-								$("#del2010").on("click", function() { mymap.removeLayer(twentyten); });
-								$("#add2010").on("click", function() { twentyten.addTo(mymap); });
+								$("#toggleAbandoned").on("click", function() { toggleLayer(homes, this) });
+								$("#toggleNeighborhood").on("click", function() { toggleLayer(neighborhoods, this) });
+								$("#toggleBeat").on("click", function() { toggleLayer(beats, this) });
+
+								$("#toggle2014").on("click", function() { toggleLayer(twentyfourteen, this) });
+								$("#toggle2013").on("click", function() { toggleLayer(twentythirteen, this) });
+								$("#toggle2012").on("click", function() { toggleLayer(twentytwelve, this) });
+								$("#toggle2011").on("click", function() { toggleLayer(twentyeleven, this) });
+								$("#toggle2010").on("click", function() { toggleLayer(twentyten, this) });
 							</script>
 						</header>
 						<br>
