@@ -36,6 +36,10 @@ get "/robbery_by_year" do
 	erb :robbery_by_year
 end
 
+get "/assault_by_year" do
+	erb :assault_by_year
+end
+
 get "/violence" do
 	erb :violence
 end

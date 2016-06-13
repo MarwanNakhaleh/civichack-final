@@ -60,6 +60,8 @@
 							<h1>Violent Crimes in Indianapolis by year</h1>
 							<div class="row">
 								<div class="inline">
+									<input id="delAbandoned" type="button" value="- abandoned" />
+									<input id="addAbandoned" type="button" value="+ abandoned" /><br><br>
 									<input id="delBeat" type="button" value="- police beat" />
 									<input id="addBeat" type="button" value="+ police beat" /><br><br>
 									<input id="delNeighborhood" type="button" value="- neighborhood" />
@@ -88,6 +90,7 @@
 							<script src="http://cdn.leafletjs.com/leaflet/v0.6.4/leaflet.js"></script>
 							<script src="<%= url('/ZIP_Code_Boundaries.js') %>"></script>
 							<script src="<%= url('/Indianapolis_Police_Zones.js') %>"></script>
+							<script src="<%= url('/Abandoned_Housing.js') %>"></script>
 							<script src="<%= url('/Indy_Neighborhoods.js') %>"></script>
 							<script src="<%= url('/leaflet.shpfile.js') %>"></script>
 							<script>
@@ -99,30 +102,46 @@
 								}).addTo(mymap);
 
 						        <% require 'csv' %>
-
-						        <% require 'csv' %>
-						        <% counter_rape = 0 %>
-						        <% counter_2014_rape = 0 %>
-						        <% counter_2013_rape = 0 %>
-						        <% counter_2012_rape = 0 %>
-						        <% counter_2011_rape = 0 %>
-						        <% counter_2010_rape = 0 %>
-						        <% counter_homicide = 0 %>
-						        <% counter_2014_homicide = 0 %>
-						        <% counter_2013_homicide = 0 %>
-						        <% counter_2012_homicide = 0 %>
-						        <% counter_2011_homicide = 0 %>
-						        <% counter_2010_homicide = 0 %>
+						        <% counter_gun = 0 %>
+						        <% counter_2014_gun = 0 %>
+						        <% counter_2013_gun = 0 %>
+						        <% counter_2012_gun = 0 %>
+						        <% counter_2011_gun = 0 %>
+						        <% counter_2010_gun = 0 %>
+						        <% counter_knife = 0 %>
+						        <% counter_2014_knife = 0 %>
+						        <% counter_2013_knife = 0 %>
+						        <% counter_2012_knife = 0 %>
+						        <% counter_2011_knife = 0 %>
+						        <% counter_2010_knife = 0 %>
+						        <% counter_other = 0 %>
+						        <% counter_2014_other = 0 %>
+						        <% counter_2013_other = 0 %>
+						        <% counter_2012_other = 0 %>
+						        <% counter_2011_other = 0 %>
+						        <% counter_2010_other = 0 %>
+						        <% counter_hands = 0 %>
+						        <% counter_2014_hands = 0 %>
+						        <% counter_2013_hands = 0 %>
+						        <% counter_2012_hands = 0 %>
+						        <% counter_2011_hands = 0 %>
+						        <% counter_2010_hands = 0 %>
 
 						        var twentyfourteen = L.layerGroup();
 								<% CSV.foreach("IMPD_UCR_2014_Data_NEW.csv") do |row| %>
-									<% if row[1].to_s == "110" || row[1].to_s == "120"%>
-										<% if row[1].to_s == "110" %>
-											<% counter_homicide += 1 %>
-											<% counter_2014_homicide += 1 %>
-										<% elsif row[1].to_s == "120" %>
-											<% counter_rape += 1 %>
-											<% counter_2014_rape += 1 %>
+									<% if row[1].to_s == "170" || row[1].to_s == "171" || row[1].to_s == "172" || row[1].to_s == "173"%>
+										<% if row[1].to_s == "170" %>
+											<% counter_gun += 1 %>
+											<% counter_2014_gun += 1 %>
+										<% elsif row[1].to_s == "171" %>
+											<% counter_knife += 1 %>
+											<% counter_2014_knife += 1 %>
+										<% elsif row[1].to_s == "172" %>
+											<% counter_other += 1 %>
+											<% counter_2014_other += 1 %>
+										<% elsif row[1].to_s == "173" %>
+											<% counter_hands += 1 %>
+											<% counter_2014_hands += 1 %>
 										<% end %>
 										var circle = L.circle([<%= row[9].to_f %>, <%= row[8].to_f %>], 10, {
 											color: 'green',
@@ -134,13 +153,19 @@
 
 								var twentythirteen = L.layerGroup();
 								<% CSV.foreach("IMPD_UCR_2013_Data_NEW.csv") do |row| %>
-									<% if row[1].to_s == "110" || row[1].to_s == "120"%>
-										<% if row[1].to_s == "110" %>
-											<% counter_homicide += 1 %>
-											<% counter_2013_homicide += 1 %>
-										<% elsif row[1].to_s == "120" %>
-											<% counter_rape += 1 %>
-											<% counter_2013_rape += 1 %>
+									<% if row[1].to_s == "170" || row[1].to_s == "171" || row[1].to_s == "172" || row[1].to_s == "173"%>
+										<% if row[1].to_s == "170" %>
+											<% counter_gun += 1 %>
+											<% counter_2013_gun += 1 %>
+										<% elsif row[1].to_s == "171" %>
+											<% counter_knife += 1 %>
+											<% counter_2013_knife += 1 %>
+										<% elsif row[1].to_s == "172" %>
+											<% counter_other += 1 %>
+											<% counter_2013_other += 1 %>
+										<% elsif row[1].to_s == "173" %>
+											<% counter_hands += 1 %>
+											<% counter_2013_hands += 1 %>
 										<% end %>
 										var circle = L.circle([<%= row[9].to_f %>, <%= row[8].to_f %>], 10, {
 											color: 'yellow',
@@ -152,13 +177,19 @@
 
 								var twentytwelve = L.layerGroup();
 								<% CSV.foreach("IMPD_UCR_2012_Data_NEW.csv") do |row| %>
-									<% if row[1].to_s == "110" || row[1].to_s == "120"%>
-										<% if row[1].to_s == "110" %>
-											<% counter_homicide += 1 %>
-											<% counter_2012_homicide += 1 %>
-										<% elsif row[1].to_s == "120" %>
-											<% counter_rape += 1 %>
-											<% counter_2012_rape += 1 %>
+									<% if row[1].to_s == "170" || row[1].to_s == "171" || row[1].to_s == "172" || row[1].to_s == "173"%>
+										<% if row[1].to_s == "170" %>
+											<% counter_gun += 1 %>
+											<% counter_2012_gun += 1 %>
+										<% elsif row[1].to_s == "171" %>
+											<% counter_knife += 1 %>
+											<% counter_2012_knife += 1 %>
+										<% elsif row[1].to_s == "172" %>
+											<% counter_other += 1 %>
+											<% counter_2012_other += 1 %>
+										<% elsif row[1].to_s == "173" %>
+											<% counter_hands += 1 %>
+											<% counter_2012_hands += 1 %>
 										<% end %>
 										var circle = L.circle([<%= row[9].to_f %>, <%= row[8].to_f %>], 10, {
 											color: 'orange',
@@ -170,13 +201,19 @@
 
 								var twentyeleven = L.layerGroup();
 								<% CSV.foreach("IMPD_UCR_2011_Data_NEW.csv") do |row| %>
-									<% if row[1].to_s == "110" || row[1].to_s == "120"%>
-										<% if row[1].to_s == "110" %>
-											<% counter_homicide += 1 %>
-											<% counter_2011_homicide += 1 %>
-										<% elsif row[1].to_s == "120" %>
-											<% counter_rape += 1 %>
-											<% counter_2011_rape += 1 %>
+									<% if row[1].to_s == "170" || row[1].to_s == "171" || row[1].to_s == "172" || row[1].to_s == "173"%>
+										<% if row[1].to_s == "170" %>
+											<% counter_gun += 1 %>
+											<% counter_2011_gun += 1 %>
+										<% elsif row[1].to_s == "171" %>
+											<% counter_knife += 1 %>
+											<% counter_2011_knife += 1 %>
+										<% elsif row[1].to_s == "172" %>
+											<% counter_other += 1 %>
+											<% counter_2011_other += 1 %>
+										<% elsif row[1].to_s == "173" %>
+											<% counter_hands += 1 %>
+											<% counter_2011_hands += 1 %>
 										<% end %>
 										var circle = L.circle([<%= row[9].to_f %>, <%= row[8].to_f %>], 10, {
 											color: 'red',
@@ -188,13 +225,19 @@
 
 								var twentyten = L.layerGroup();
 								<% CSV.foreach("IMPD_UCR_2010_Data_NEW.csv") do |row| %>
-									<% if row[1].to_s == "110" || row[1].to_s == "120"%>
-										<% if row[1].to_s == "110" %>
-											<% counter_homicide += 1 %>
-											<% counter_2010_homicide += 1 %>
-										<% elsif row[1].to_s == "120" %>
-											<% counter_rape += 1 %>
-											<% counter_2010_rape += 1 %>
+									<% if row[1].to_s == "170" || row[1].to_s == "171" || row[1].to_s == "172" || row[1].to_s == "173"%>
+										<% if row[1].to_s == "170" %>
+											<% counter_gun += 1 %>
+											<% counter_2010_gun += 1 %>
+										<% elsif row[1].to_s == "171" %>
+											<% counter_knife += 1 %>
+											<% counter_2010_knife += 1 %>
+										<% elsif row[1].to_s == "172" %>
+											<% counter_other += 1 %>
+											<% counter_2010_other += 1 %>
+										<% elsif row[1].to_s == "173" %>
+											<% counter_hands += 1 %>
+											<% counter_2010_hands += 1 %>
 										<% end %>
 										var circle = L.circle([<%= row[9].to_f %>, <%= row[8].to_f %>], 10, {
 											color: 'purple',
@@ -248,7 +291,22 @@
 									}
 								});
 
+								var homes = L.geoJson(houses, {
+									style: function (feature) {
+										fillColors = ['red', 'green', 'blue'];
+										styles = {
+											weight: 1,
+											color: "#999",
+											opacity: 1,
+											fillColor: 'blue',
+											fillOpacity: 0.5
+										}
+									}
+								});
 
+
+								$("#delAbandoned").on("click", function() { mymap.removeLayer(homes); });
+								$("#addAbandoned").on("click", function() { homes.addTo(mymap); });
 								$("#delNeighborhood").on("click", function() { mymap.removeLayer(neighborhoods); });
 								$("#addNeighborhood").on("click", function() { neighborhoods.addTo(mymap); });
 								$("#delBeat").on("click", function() { mymap.removeLayer(beats); });
@@ -266,14 +324,15 @@
 								$("#add2010").on("click", function() { twentyten.addTo(mymap); });
 							</script>
 						</header>
+						<br>
 						<h2>Conclusions</h2>
-						<p>Between 2010 and 2014, there were <%= counter_rape %> rapes and <%= counter_homicide %> homicides in Indianapolis.</p>
-						<p>In 2010, there were <%= counter_2014_rape %> rapes and <%= counter_2014_homicide %> homicides.<br>
-							In 2011, there were <%= counter_2013_rape %> rapes and <%= counter_2013_homicide %> homicides.<br>
-							In 2012, there were <%= counter_2012_rape %> rapes and <%= counter_2012_homicide %> homicides.<br>
-							In 2013, there were <%= counter_2011_rape %> rapes and <%= counter_2011_homicide %> homicides.<br>
-							In 2014, there were <%= counter_2010_rape %> rapes and <%= counter_2010_homicide %> homicides.</p>
-						<p>Thankfully, the number of violent crimes is dropping.  However, violent crimes appear to be spreading further into the outer reaches of the greater Indianapolis area instead of staying more concentrated within the I-465 loop.</p> 
+						<p>Between 2010 and 2014, there were <%= counter_gun %> gun aggravated assaults, <%= counter_knife %> knife aggavated assaults, <%= counter_other %> other weapon aggravated assaults, and <%= counter_hands %> aggravated assaults using hands in Indianapolis.</p>
+						<p>In 2010, there were <%= counter_2010_gun %> gun aggravated assaults, <%= counter_2010_knife %> knife aggavated assaults, <%= counter_2010_other %> other weapon aggravated assaults, and <%= counter_2010_hands %> aggravated assaults using hands.<br>
+						In 2011, there were <%= counter_2011_gun %> gun aggravated assaults, <%= counter_2011_knife %> knife aggavated assaults, <%= counter_2011_other %> other weapon aggravated assaults, and <%= counter_2011_hands %> aggravated assaults using hands.<br>
+						In 2012, there were <%= counter_2012_gun %> gun aggravated assaults, <%= counter_2012_knife %> knife aggavated assaults, <%= counter_2012_other %> other weapon aggravated assaults, and <%= counter_2012_hands %> aggravated assaults using hands.<br>
+						In 2013, there were <%= counter_2013_gun %> gun aggravated assaults, <%= counter_2013_knife %> knife aggavated assaults, <%= counter_2013_other %> other weapon aggravated assaults, and <%= counter_2013_hands %> aggravated assaults using hands.<br>
+						In 2014, there were <%= counter_2014_gun %> gun aggravated assaults, <%= counter_2014_knife %> knife aggavated assaults, <%= counter_2014_other %> other weapon aggravated assaults, and <%= counter_2014_hands %> aggravated assaults using hands.</p>
+						<p>For some reason, the number of gun and fist assaults have skyrocketed in the past few years.</p>
 					</div>
 				</div>
 

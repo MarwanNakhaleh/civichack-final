@@ -60,6 +60,8 @@
 							<h1>Robberies in Indianapolis by year</h1>
 							<div class="row">
 								<div class="inline">
+									<input id="delAbandoned" type="button" value="- abandoned" />
+									<input id="addAbandoned" type="button" value="+ abandoned" /><br><br>
 									<input id="delBeat" type="button" value="- police beat" />
 									<input id="addBeat" type="button" value="+ police beat" /><br><br>
 									<input id="delNeighborhood" type="button" value="- neighborhood" />
@@ -89,6 +91,7 @@
 							<script src="<%= url('/ZIP_Code_Boundaries.js') %>"></script>
 							<script src="<%= url('/Indianapolis_Police_Zones.js') %>"></script>
 							<script src="<%= url('/Indy_Neighborhoods.js') %>"></script>
+							<script src="<%= url('/Abandoned_Housing.js') %>"></script>
 							<script src="<%= url('/leaflet.shpfile.js') %>"></script>
 							<script>
 								var mymap = L.map('mapid').setView([39.768, -86.159], 11);
@@ -98,6 +101,7 @@
 									id: 'mapbox.testingleaflet'
 								}).addTo(mymap);
 
+								<% require 'csv' %>
 								<% counter_highway = 0 %>
 						        <% counter_2014_highway = 0 %>
 						        <% counter_2013_highway = 0 %>
@@ -266,7 +270,22 @@
 									}
 								});
 
+								var homes = L.geoJson(houses, {
+									style: function (feature) {
+										fillColors = ['red', 'green', 'blue'];
+										styles = {
+											weight: 1,
+											color: "#999",
+											opacity: 1,
+											fillColor: 'blue',
+											fillOpacity: 0.5
+										}
+									}
+								});
 
+
+								$("#delAbandoned").on("click", function() { mymap.removeLayer(homes); });
+								$("#addAbandoned").on("click", function() { homes.addTo(mymap); });
 								$("#delNeighborhood").on("click", function() { mymap.removeLayer(neighborhoods); });
 								$("#addNeighborhood").on("click", function() { neighborhoods.addTo(mymap); });
 								$("#delBeat").on("click", function() { mymap.removeLayer(beats); });
@@ -284,7 +303,7 @@
 								$("#add2010").on("click", function() { twentyten.addTo(mymap); });
 							</script>
 						</header>
-
+						<br>
 						<h2>Conclusions</h2>
 						<p>Between 2010 and 2014, there were <%= counter_highway %> highway robberies, <%= counter_commercial %> commercial robberies, and <%= counter_residence %> residence robberies.</p>
 						<p>In 2010, there were <%= counter_2010_highway %> highway robberies, <%= counter_2010_commercial %> commercial robberies, and <%= counter_2010_residence %> residence robberies.<br>
