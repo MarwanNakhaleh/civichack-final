@@ -60,20 +60,20 @@
 							<h1>Violent Crimes in Indianapolis by year</h1>
 							<div class="row">
 								<div class="inline">
-									<input id="delBeat" type="button" value="Delete police beat" />
-									<input id="addBeat" type="button" value="Add police beat" /><br>
-									<input id="delNeighborhood" type="button" value="Delete neighborhood" />
-									<input id="addNeighborhood" type="button" value="Add neighborhood" /><br>
-									<input id="del2014" type="button" value="Delete 2014 data" />
-									<input id="add2014" type="button" value="Add 2014 data" /><br>
-									<input id="del2013" type="button" value="Delete 2013 data" />
-									<input id="add2013" type="button" value="Add 2013 data" /><br>
-									<input id="del2012" type="button" value="Delete 2012 data" />
-									<input id="add2012" type="button" value="Add 2012 data" /><br>
-									<input id="del2011" type="button" value="Delete 2011 data" />
-									<input id="add2011" type="button" value="Add 2011 data" /><br>
-									<input id="del2010" type="button" value="Delete 2010 data" />
-									<input id="add2010" type="button" value="Add 2010 data" />
+									<input id="delBeat" type="button" value="- police beat" />
+									<input id="addBeat" type="button" value="+ police beat" /><br><br>
+									<input id="delNeighborhood" type="button" value="- neighborhood" />
+									<input id="addNeighborhood" type="button" value="+ neighborhood" /><br><br>
+									<input id="del2014" type="button" value="- 2014 data" />
+									<input id="add2014" type="button" value="+ 2014 data" /><br>
+									<input id="del2013" type="button" value="- 2013 data" />
+									<input id="add2013" type="button" value="+ 2013 data" /><br>
+									<input id="del2012" type="button" value="- 2012 data" />
+									<input id="add2012" type="button" value="+ 2012 data" /><br>
+									<input id="del2011" type="button" value="- 2011 data" />
+									<input id="add2011" type="button" value="+ 2011 data" /><br>
+									<input id="del2010" type="button" value="- 2010 data" />
+									<input id="add2010" type="button" value="+ 2010 data" />
 								</div>
 								<div id="mapid"></div>
 							</div>
@@ -100,9 +100,30 @@
 
 						        <% require 'csv' %>
 
+						        <% require 'csv' %>
+						        <% counter_rape = 0 %>
+						        <% counter_2014_rape = 0 %>
+						        <% counter_2013_rape = 0 %>
+						        <% counter_2012_rape = 0 %>
+						        <% counter_2011_rape = 0 %>
+						        <% counter_2010_rape = 0 %>
+						        <% counter_homicide = 0 %>
+						        <% counter_2014_homicide = 0 %>
+						        <% counter_2013_homicide = 0 %>
+						        <% counter_2012_homicide = 0 %>
+						        <% counter_2011_homicide = 0 %>
+						        <% counter_2010_homicide = 0 %>
+
 						        var twentyfourteen = L.layerGroup();
 								<% CSV.foreach("IMPD_UCR_2014_Data_NEW.csv") do |row| %>
 									<% if row[1].to_s == "110" || row[1].to_s == "120"%>
+										<% if row[1].to_s == "110" %>
+											<% counter_homicide += 1 %>
+											<% counter_2014_homicide += 1 %>
+										<% elsif row[1].to_s == "120" %>
+											<% counter_rape += 1 %>
+											<% counter_2014_rape += 1 %>
+										<% end %>
 										var circle = L.circle([<%= row[9].to_f %>, <%= row[8].to_f %>], 10, {
 											color: 'green',
 											fillColor: '#0c0',
@@ -114,6 +135,13 @@
 								var twentythirteen = L.layerGroup();
 								<% CSV.foreach("IMPD_UCR_2013_Data_NEW.csv") do |row| %>
 									<% if row[1].to_s == "110" || row[1].to_s == "120"%>
+										<% if row[1].to_s == "110" %>
+											<% counter_homicide += 1 %>
+											<% counter_2013_homicide += 1 %>
+										<% elsif row[1].to_s == "120" %>
+											<% counter_rape += 1 %>
+											<% counter_2013_rape += 1 %>
+										<% end %>
 										var circle = L.circle([<%= row[9].to_f %>, <%= row[8].to_f %>], 10, {
 											color: 'yellow',
 											fillColor: '#ff0',
@@ -125,6 +153,13 @@
 								var twentytwelve = L.layerGroup();
 								<% CSV.foreach("IMPD_UCR_2012_Data_NEW.csv") do |row| %>
 									<% if row[1].to_s == "110" || row[1].to_s == "120"%>
+										<% if row[1].to_s == "110" %>
+											<% counter_homicide += 1 %>
+											<% counter_2012_homicide += 1 %>
+										<% elsif row[1].to_s == "120" %>
+											<% counter_rape += 1 %>
+											<% counter_2012_rape += 1 %>
+										<% end %>
 										var circle = L.circle([<%= row[9].to_f %>, <%= row[8].to_f %>], 10, {
 											color: 'orange',
 											fillColor: '#f60',
@@ -136,6 +171,13 @@
 								var twentyeleven = L.layerGroup();
 								<% CSV.foreach("IMPD_UCR_2011_Data_NEW.csv") do |row| %>
 									<% if row[1].to_s == "110" || row[1].to_s == "120"%>
+										<% if row[1].to_s == "110" %>
+											<% counter_homicide += 1 %>
+											<% counter_2011_homicide += 1 %>
+										<% elsif row[1].to_s == "120" %>
+											<% counter_rape += 1 %>
+											<% counter_2011_rape += 1 %>
+										<% end %>
 										var circle = L.circle([<%= row[9].to_f %>, <%= row[8].to_f %>], 10, {
 											color: 'red',
 											fillColor: '#c00',
@@ -147,6 +189,13 @@
 								var twentyten = L.layerGroup();
 								<% CSV.foreach("IMPD_UCR_2010_Data_NEW.csv") do |row| %>
 									<% if row[1].to_s == "110" || row[1].to_s == "120"%>
+										<% if row[1].to_s == "110" %>
+											<% counter_homicide += 1 %>
+											<% counter_2010_homicide += 1 %>
+										<% elsif row[1].to_s == "120" %>
+											<% counter_rape += 1 %>
+											<% counter_2010_rape += 1 %>
+										<% end %>
 										var circle = L.circle([<%= row[9].to_f %>, <%= row[8].to_f %>], 10, {
 											color: 'purple',
 											fillColor: '#606',
@@ -217,6 +266,14 @@
 								$("#add2010").on("click", function() { twentyten.addTo(mymap); });
 							</script>
 						</header>
+						<h2>Conclusions</h2>
+						<p>Between 2010 and 2014, there were <%= counter_rape %> rapes and <%= counter_homicide %> homicides in Indianapolis.</p>
+						<p>In 2010, there were <%= counter_2014_rape %> rapes and <%= counter_2014_homicide %> homicides.<br>
+							In 2011, there were <%= counter_2013_rape %> rapes and <%= counter_2013_homicide %> homicides.<br>
+							In 2012, there were <%= counter_2012_rape %> rapes and <%= counter_2012_homicide %> homicides.<br>
+							In 2013, there were <%= counter_2011_rape %> rapes and <%= counter_2011_homicide %> homicides.<br>
+							In 2014, there were <%= counter_2010_rape %> rapes and <%= counter_2010_homicide %> homicides.</p>
+						<p>Thankfully, the number of violent crimes is dropping.  However, violent crimes appear to be spreading further into the outer reaches of the greater Indianapolis area instead of staying more concentrated within the I-465 loop.</p> 
 					</div>
 				</div>
 
