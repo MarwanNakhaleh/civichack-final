@@ -9,8 +9,18 @@
 	<link rel="stylesheet" href="<%= url('/assets/css/main.css') %>" />
 	<style>
 		#mapid { 
-			height: 500px;
-			width: 100%;
+			height: 600px;
+			width: 50%;
+			display: inline-block;
+			float:right;
+		}
+		.inline{
+			width:50%;
+			float:left;	
+		}
+		.row{
+			display:block;
+			width:100%;
 		}
 	</style>
 
@@ -45,29 +55,40 @@
 
 				<div id="main">
 					<div class="inner">
+						<p><a href="/maps">Back</a></p>
 						<header>
 							<h1>Violent Crimes in Indianapolis by year</h1>
-							<p>
-								<input id="del2014" type="button" value="Delete 2014 data" />
-								<input id="add2014" type="button" value="Add 2014 data" /><br>
-								<input id="del2013" type="button" value="Delete 2013 data" />
-								<input id="add2013" type="button" value="Add 2013 data" /><br>
-								<input id="del2012" type="button" value="Delete 2012 data" />
-								<input id="add2012" type="button" value="Add 2012 data" /><br>
-								<input id="del2011" type="button" value="Delete 2011 data" />
-								<input id="add2011" type="button" value="Add 2011 data" /><br>
-								<input id="del2010" type="button" value="Delete 2010 data" />
-								<input id="add2010" type="button" value="Add 2010 data" />
-							</p>
-							<div id="mapid"></div>
+							<div class="row">
+								<div class="inline">
+									<input id="delBeat" type="button" value="Delete police beat" />
+									<input id="addBeat" type="button" value="Add police beat" /><br>
+									<input id="delNeighborhood" type="button" value="Delete neighborhood" />
+									<input id="addNeighborhood" type="button" value="Add neighborhood" /><br>
+									<input id="del2014" type="button" value="Delete 2014 data" />
+									<input id="add2014" type="button" value="Add 2014 data" /><br>
+									<input id="del2013" type="button" value="Delete 2013 data" />
+									<input id="add2013" type="button" value="Add 2013 data" /><br>
+									<input id="del2012" type="button" value="Delete 2012 data" />
+									<input id="add2012" type="button" value="Add 2012 data" /><br>
+									<input id="del2011" type="button" value="Delete 2011 data" />
+									<input id="add2011" type="button" value="Add 2011 data" /><br>
+									<input id="del2010" type="button" value="Delete 2010 data" />
+									<input id="add2010" type="button" value="Add 2010 data" />
+								</div>
+								<div id="mapid"></div>
+							</div>
+							<!--
 							<br><br>
 							<p><b>Green:</b> 2014</p>
 							<p><b>Yellow:</b> 2013</p>
 							<p><b>Orange:</b> 2012</p>
 							<p><b>Red:</b> 2011</p>
 							<p><b>Purple:</b> 2010</p>
-							<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
-							<script src="<%= url('/catiline.js') %>"></script>
+							-->
+							<script src="http://cdn.leafletjs.com/leaflet/v0.6.4/leaflet.js"></script>
+							<script src="<%= url('/ZIP_Code_Boundaries.js') %>"></script>
+							<script src="<%= url('/Indianapolis_Police_Zones.js') %>"></script>
+							<script src="<%= url('/Indy_Neighborhoods.js') %>"></script>
 							<script src="<%= url('/leaflet.shpfile.js') %>"></script>
 							<script>
 								var mymap = L.map('mapid').setView([39.768, -86.159], 11);
@@ -89,7 +110,6 @@
 										}).addTo(twentyfourteen);
 									<% end %>
 								<% end %>
-								twentyfourteen.addTo(mymap);
 
 								var twentythirteen = L.layerGroup();
 								<% CSV.foreach("IMPD_UCR_2013_Data_NEW.csv") do |row| %>
@@ -101,7 +121,6 @@
 										}).addTo(twentythirteen);
 									<% end %>
 								<% end %>
-								twentythirteen.addTo(mymap);
 
 								var twentytwelve = L.layerGroup();
 								<% CSV.foreach("IMPD_UCR_2012_Data_NEW.csv") do |row| %>
@@ -113,7 +132,6 @@
 										}).addTo(twentytwelve);
 									<% end %>
 								<% end %>
-								twentytwelve.addTo(mymap);
 
 								var twentyeleven = L.layerGroup();
 								<% CSV.foreach("IMPD_UCR_2011_Data_NEW.csv") do |row| %>
@@ -125,7 +143,6 @@
 										}).addTo(twentyeleven);
 									<% end %>
 								<% end %>
-								twentyeleven.addTo(mymap);
 
 								var twentyten = L.layerGroup();
 								<% CSV.foreach("IMPD_UCR_2010_Data_NEW.csv") do |row| %>
@@ -137,7 +154,56 @@
 										}).addTo(twentyten);
 									<% end %>
 								<% end %>
-								twentyten.addTo(mymap);
+
+								var beats = L.geoJson(police, {
+									style: function (feature) {
+										fillColors = ['red', 'green', 'blue'];
+										styles = {
+											weight: 1,
+											color: "#999",
+											opacity: 1,
+											fillColor: "#999999",
+											fillOpacity: 0.5
+										}
+									},
+									onEachFeature: function(feature, layer) {
+										if (feature.properties) {
+											layer.bindPopup(Object.keys(feature.properties).map(function(k) {
+												return k + ": " + feature.properties[k];
+											}).join("<br />"), {
+												maxHeight: 200
+											});
+										}
+									}
+								});
+
+								var neighborhoods = L.geoJson(neighborhoods, {
+									style: function (feature) {
+										fillColors = ['red', 'green', 'blue'];
+										styles = {
+											weight: 1,
+											color: "#999",
+											opacity: 1,
+											fillColor: 'blue',
+											fillOpacity: 0.5
+										}
+									},
+									onEachFeature: function(feature, layer) {
+										if (feature.properties) {
+											layer.bindPopup(Object.keys(feature.properties).map(function(k) {
+												return k + ": " + feature.properties[k];
+											}).join("<br />"), {
+												maxHeight: 200
+											});
+										}
+									}
+								});
+
+
+								$("#delNeighborhood").on("click", function() { mymap.removeLayer(neighborhoods); });
+								$("#addNeighborhood").on("click", function() { neighborhoods.addTo(mymap); });
+								$("#delBeat").on("click", function() { mymap.removeLayer(beats); });
+								$("#addBeat").on("click", function() { beats.addTo(mymap); });
 
 								$("#del2014").on("click", function() { mymap.removeLayer(twentyfourteen); });
 								$("#add2014").on("click", function() { twentyfourteen.addTo(mymap); });
@@ -151,41 +217,6 @@
 								$("#add2010").on("click", function() { twentyten.addTo(mymap); });
 							</script>
 						</header>
-						<section class="tiles">
-							<article class="style1">
-								<span class="image">
-									<img src="images/pic01.jpg" alt="" />
-								</span>
-								<a href="/crime">
-									<h2>Crime</h2>
-									<div class="content">
-										<p>See how crime correlates with zipcode, suboptimal infrastructure, etc.</p>
-									</div>
-								</a>
-							</article>
-							<article class="style2">
-								<span class="image">
-									<img src="images/pic02.jpg" alt="" />
-								</span>
-								<a href="/traffic">
-									<h2>Traffic</h2>
-									<div class="content">
-										<p>See how where people are meets with traffic accidents.</p>
-									</div>
-								</a>
-							</article>
-							<article class="style3">
-								<span class="image">
-									<img src="images/pic03.jpg" alt="" />
-								</span>
-								<a href="/other">
-									<h2>More</h2>
-									<div class="content">
-										<p>Other interesting geolocated correlations.</p>
-									</div>
-								</a>
-							</article>
-						</section>
 					</div>
 				</div>
 
