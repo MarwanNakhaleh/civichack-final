@@ -4,6 +4,7 @@
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
 	<script src="htp://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
 	<script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script> 
 	<link rel="stylesheet" href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' />
 	<link rel="stylesheet" href="<%= url('/assets/css/main.css') %>" />
 	<style>
@@ -46,6 +47,18 @@
 					<div class="inner">
 						<header>
 							<h1>Violent Crimes in Indianapolis by year</h1>
+							<p>
+								<input id="del2014" type="button" value="Delete 2014 data" />
+								<input id="add2014" type="button" value="Add 2014 data" /><br>
+								<input id="del2013" type="button" value="Delete 2013 data" />
+								<input id="add2013" type="button" value="Add 2013 data" /><br>
+								<input id="del2012" type="button" value="Delete 2012 data" />
+								<input id="add2012" type="button" value="Add 2012 data" /><br>
+								<input id="del2011" type="button" value="Delete 2011 data" />
+								<input id="add2011" type="button" value="Add 2011 data" /><br>
+								<input id="del2010" type="button" value="Delete 2010 data" />
+								<input id="add2010" type="button" value="Add 2010 data" />
+							</p>
 							<div id="mapid"></div>
 							<br><br>
 							<p><b>Green:</b> 2014</p>
@@ -126,22 +139,16 @@
 								<% end %>
 								twentyten.addTo(mymap);
 
-								var shpfile = new L.Shapefile('ZIP_Code_Boundaries.zip', {
-									onEachFeature: function(feature, layer) {
-										if (feature.properties) {
-											layer.bindPopup(Object.keys(feature.properties).map(function(k) {
-												return k + ": " + feature.properties[k];
-											}).join("<br />"), {
-												maxHeight: 200
-											});
-										}
-									}
-								});
-
-								shpfile.addTo(mymap);
-								shpfile.once("data:loaded", function() {
-									console.log("finished loaded shapefile");
-								});
+								$("#del2014").on("click", function() { mymap.removeLayer(twentyfourteen); });
+								$("#add2014").on("click", function() { twentyfourteen.addTo(mymap); });
+								$("#del2013").on("click", function() { mymap.removeLayer(twentythirteen); });
+								$("#add2013").on("click", function() { twentythirteen.addTo(mymap); });
+								$("#del2012").on("click", function() { mymap.removeLayer(twentytwelve); });
+								$("#add2012").on("click", function() { twentytwelve.addTo(mymap); });
+								$("#del2011").on("click", function() { mymap.removeLayer(twentyeleven); });
+								$("#add2011").on("click", function() { twentyeleven.addTo(mymap); });
+								$("#del2010").on("click", function() { mymap.removeLayer(twentyten); });
+								$("#add2010").on("click", function() { twentyten.addTo(mymap); });
 							</script>
 						</header>
 						<section class="tiles">
