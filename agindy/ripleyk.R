@@ -1,0 +1,12 @@
+library(spatstat)
+x <- read.csv('IMPD_UCR_2014_Data_NEW.csv')
+y <- x[,c(9,10)]
+pattern <- ppp(x[,9],x[,10], c(39.7134835,39.9267706), c(-86.2706596,-86.0462716))
+plot(pattern)
+dev.copy(jpg,'x_y_plot.jpg')
+dev.off()
+plot(density(pattern))
+dev.copy(jpg,'density_plot.jpg')
+dev.off()
+plot(Kest(pattern))
+dev.copy(jpg,'k_plot.jpg')
